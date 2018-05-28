@@ -1,0 +1,25 @@
+{
+  "name": "expressjs-api",
+  "version": "1.0.0",
+  "description": "Serveur HTTP pour API REST",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DrCoc/expressjs-api.git"
+  },
+  "keywords": [
+    "server.http.api.rest"
+  ],
+  "author": "DrCoc",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DrCoc/expressjs-api/issues"
+  },
+  "homepage": "https://github.com/DrCoc/expressjs-api#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  } 
+}
