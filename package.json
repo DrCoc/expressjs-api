@@ -20,7 +20,10 @@
   },
   "homepage": "https://github.com/DrCoc/expressjs-api#readme",
   "dependencies": {
+    "bcrypt": "^2.0.1",
+    "body-parser": "^1.18.3",
     "express": "^4.16.3",
+    "jsonwebtoken": "^8.2.1",
     "mysql": "^2.15.0",
     "sequelize": "^3.30.4"
   }
