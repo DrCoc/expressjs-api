@@ -75,7 +75,6 @@ module.exports = {
                     isAdmin  : 0
                 })
                     .then(function(newUser){
-                        console.log('Hello');
                         done(newUser);
                     })
                     .catch(function (err) {
@@ -153,6 +152,77 @@ module.exports = {
                     'userId': userFound.id,
                     'token' : jwtUtils.generateTokenForUser(userFound)
                 });
+            }
+        )
+    },
+    getUserProfil : function (req, res) {
+        // Getting auth header
+        var authHeader = req.headers['authorization'];
+        var userId     = jwtUtils.getUserId(authHeader);
+        console.log(userId);
+
+        if (userId < 0){
+            return res.status(400).json({'error': 'wrong token'});
+        }
+
+        models.User.findOne({
+            attributes: ['id', 'email', 'username', 'biography'],
+            where: {id:userId}
+        })
+            .then(function (user) {
+                if (user) {
+                    res.status(201).json(user);
+                } else {
+                    return res.status(404).json({'error': 'user not found'});
+                }
+
+            })
+            .catch(function (err) {
+                return res.status(500).json({'error': 'cannot fetch user'});
+            })
+    },
+    updateUserProfile: function (req, res) {
+        // Getting auth header
+        var authHeader = req.headers['authorization'];
+        var userId     = jwtUtils.getUserId(authHeader);
+
+        // Fields
+        var biography = req.body.biography;
+        
+        asyncLib.waterfall([
+            // Get id and biography of the connected user
+            function (done) {
+                models.User.findOne({
+                    attributes: ['id', 'biography'],
+                    where: {id: userId}
+                })
+                    .then(function (userFound) {
+                        done(null, userFound);
+                    })
+                    .catch(function (err) {
+                        return res.status(500).json({'error': 'unable to verify user'});
+                    })
+            },
+            // Update the biography in the data base
+            function (userFound, done){
+                if (userFound) {
+                    userFound.update({
+                        biography: (biography ? biography : userFound.biography)
+                    })
+                        .then(function () {
+                            done(userFound);
+                        })
+                        .catch(function (err) {
+                            return res.status(500).json({'error': 'cannot update user profile'});
+                        })
+                } else {
+                    return res.status(404).json({'error': 'user not found'});
+                }
+            }
+        ],
+            // Response with information of the connected user
+            function (userFound) {
+                return res.status(201).json({userFound});
             }
         )
     }
