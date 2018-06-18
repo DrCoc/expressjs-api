@@ -159,7 +159,6 @@ module.exports = {
         // Getting auth header
         var authHeader = req.headers['authorization'];
         var userId     = jwtUtils.getUserId(authHeader);
-        console.log(userId);
 
         if (userId < 0){
             return res.status(400).json({'error': 'wrong token'});
