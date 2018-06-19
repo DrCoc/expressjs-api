@@ -2,6 +2,7 @@
 var express = require('express');
 var usersController = require('./routes/usersController');
 var postsController = require('./routes/postsController');
+var likesController = require('./routes/likesController');
 
 // Router
 exports.router = (function () {
@@ -16,6 +17,10 @@ exports.router = (function () {
     // Post routes
     router.route('/posts/create/').post(postsController.createPost);
     router.route('/posts/').get(postsController.listPosts);
+
+    // Like posts
+    router.route('/posts/:postId/vote').post(likesController.votePost);
+
 
     return router;
 })();
